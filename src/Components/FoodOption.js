@@ -1,4 +1,4 @@
-import { imageGridCards } from "../Utils/FoodData"
+import { imageGridCards } from "../Utils/foodData"
 import Foodcard from "./FoodCard"
 
 export default function FoodOption(){
@@ -12,4 +12,4 @@ export default function FoodOption(){
           </div>
         </>
     )
-}   
+}
