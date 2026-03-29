@@ -5,6 +5,7 @@ import FoodOption from "./Components/FoodOption"
 import GroceryOption from "./Components/GroceryOption";
 import DineOption from "./Components/DineOption";
 import DineCard from "./Components/DineCard";
+import Restaurant from "./Components/Restaurant";
 
 
 function App(){
@@ -15,6 +16,7 @@ function App(){
             <GroceryOption></GroceryOption>
             <DineOption></DineOption>
             <DineCard></DineCard>
+            <Restaurant></Restaurant>
         </>
     )
 
