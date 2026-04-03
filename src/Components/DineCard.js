@@ -15,7 +15,7 @@ export default function DineCard({RestData}){
             alt="Restaurant"
           />
           {/* Gradient overlay behind the text */}
-          <div className="absolute bottom-0 left-0 right-0 h-16 `bg-gradient-to-t` from-black to-transparent"></div>
+          <div className="absolute bottom-0 left-0 right-0 h-16 bg-linear-to-t from-black to-transparent"></div>
           {/* Text with higher z-index */}
           <p className="absolute bottom-2 left-2 text-xl text-white z-10">
             {RestData.info.name}
