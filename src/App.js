@@ -22,8 +22,8 @@ function App(){
                     <Route path="/restaurant" element={<Restaurant></Restaurant>}></Route>
                     <Route path="/city/delhi/:id" element={<RestaurantMenu></RestaurantMenu>}></Route>
                     <Route path="/city/delhi/:id/search" element={<SearchFood></SearchFood>}></Route>
+                    <Route path="/checkout" element={<Checkout></Checkout>}></Route>
                 </Route>
-                <Route path="/Checkout" element={<Checkout></Checkout>}></Route>
             </Routes>
         </BrowserRouter>
        </Provider>

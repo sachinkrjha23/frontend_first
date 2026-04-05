@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import RestCard from "./RestCard";
 import Shimmer from "./Shimmer";
 
+// Create cache outside component
+let cachedRestaurants = null;
+
 export default function Restaurant(){
    
     const [RestData, setRestData] = useState([]);
@@ -15,15 +18,24 @@ export default function Restaurant(){
 
     useEffect(() => {
         async function fetchData() {
+            // If data is already cached, use it without shimmer
+            if (cachedRestaurants) {
+                setRestData(cachedRestaurants);
+                setFilteredRestData(cachedRestaurants);
+                setLoading(false);
+                return;
+            }
+
             try {
+                setLoading(true);
                 const proxyServer = "https://cors-anywhere.herokuapp.com/"
                 const swiggyAPI = "https://www.swiggy.com/dapi/restaurants/list/v5?lat=28.7040592&lng=77.10249019999999&is-seo-homepage-enabled=true";
                 const response = await fetch(proxyServer + swiggyAPI);
                 const data = await response.json();
                 const restaurants = data?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants || [];
                 
-                // Log delivery times to see what's available
-                const deliveryTimes = restaurants.map(r => r?.info?.sla?.deliveryTime).filter(t => t > 0);
+                // Store in cache
+                cachedRestaurants = restaurants;
                 
                 setRestData(restaurants);
                 setFilteredRestData(restaurants);
@@ -34,14 +46,13 @@ export default function Restaurant(){
             }
         }
         fetchData();
-    }, []);
+    }, []); // Empty dependency array - only runs once on mount
 
     // Apply filters whenever any filter changes
     useEffect(() => {
         if (!RestData.length) return;
         
         let filtered = [...RestData];
-        
         
         // Rating 4.5+ filter
         if (ratingFilter) {
@@ -83,89 +94,84 @@ export default function Restaurant(){
     const vegCount = RestData.filter(r => r?.info?.veg === true || r?.info?.isVeg === true).length;
 
     return (
-        <>
-
-            {/* <RestHeader/> */}
-        
-            <div className="w-[80%] mx-auto mt-20">
-                {/* Filter Buttons Section */}
-                <div className="flex flex-wrap gap-3 mb-6 pb-4 border-b border-gray-200">
-                    <button
-                        onClick={() => setRatingFilter(!ratingFilter)}
-                        className={`px-5 py-2 rounded-full font-medium transition-all duration-200 ${
-                            ratingFilter
-                                ? "bg-blue-600 text-white shadow-md"
-                                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                        }`}
-                    >
-                        ⭐ Rating 4.5+
-                    </button>
-                    
-                    <button
-                        onClick={() => setFastDeliveryFilter(!fastDeliveryFilter)}
-                        className={`px-5 py-2 rounded-full font-medium transition-all duration-200 ${
-                            fastDeliveryFilter
-                                ? "bg-green-600 text-white shadow-md"
-                                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                        }`}
-                    >
-                        🚚 Fast Delivery (≤30 min)
-                    </button>
-                    
-                    <button
-                        onClick={() => setPureVegFilter(!pureVegFilter)}
-                        className={`px-5 py-2 rounded-full font-medium transition-all duration-200 ${
-                            pureVegFilter
-                                ? "bg-green-600 text-white shadow-md"
-                                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                        }`}
-                    >
-                        🌱 Pure Veg
-                    </button>
-                    
-                    {(ratingFilter || fastDeliveryFilter || pureVegFilter) && (
-                        <button
-                            onClick={clearAllFilters}
-                            className="px-5 py-2 rounded-full font-medium text-red-600 hover:bg-red-50 transition-all duration-200"
-                        >
-                            ✕ Clear All
-                        </button>
-                    )}
-                </div>
+        <div className="w-[80%] mx-auto mt-20">
+            {/* Filter Buttons Section */}
+            <div className="flex flex-wrap gap-3 mb-6 pb-4 border-b border-gray-200">
+                <button
+                    onClick={() => setRatingFilter(!ratingFilter)}
+                    className={`px-5 py-2 rounded-full font-medium transition-all duration-200 ${
+                        ratingFilter
+                            ? "bg-blue-600 text-white shadow-md"
+                            : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    }`}
+                >
+                    ⭐ Rating 4.5+
+                </button>
                 
-                {/* Show counts ONLY when filters are active */}
+                <button
+                    onClick={() => setFastDeliveryFilter(!fastDeliveryFilter)}
+                    className={`px-5 py-2 rounded-full font-medium transition-all duration-200 ${
+                        fastDeliveryFilter
+                            ? "bg-green-600 text-white shadow-md"
+                            : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    }`}
+                >
+                    🚚 Fast Delivery (≤30 min)
+                </button>
+                
+                <button
+                    onClick={() => setPureVegFilter(!pureVegFilter)}
+                    className={`px-5 py-2 rounded-full font-medium transition-all duration-200 ${
+                        pureVegFilter
+                            ? "bg-green-600 text-white shadow-md"
+                            : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    }`}
+                >
+                    🌱 Pure Veg
+                </button>
+                
                 {(ratingFilter || fastDeliveryFilter || pureVegFilter) && (
-                    <div className="mb-4 text-sm text-gray-600 bg-gray-50 p-3 rounded-lg">
-                        <span className="font-medium">Filter summary:</span>
-                        {ratingFilter && <span className="ml-3">⭐ Rating 4.5+ ({ratingCount} available)</span>}
-                        {fastDeliveryFilter && <span className="ml-3">🚚 Fast delivery ({deliveryCount} available)</span>}
-                        {pureVegFilter && <span className="ml-3">🌱 Pure veg ({vegCount} available)</span>}
-                    </div>
-                )}
-                
-                <div className="mb-4 text-sm text-gray-600">
-                    Showing {filteredRestData.length} of {RestData.length} restaurants
-                </div>
-                
-                {filteredRestData.length > 0 ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                        {filteredRestData.map((restInfo) => (
-                            <RestCard key={restInfo?.info?.id} restInfo={restInfo} />
-                        ))}
-                    </div>
-                ) : (
-                    <div className="text-center py-12 bg-gray-50 rounded-lg">
-                        <p className="text-gray-500 text-lg">No restaurants match your filters.</p>
-                        <p className="text-gray-400 text-sm mt-2">Try adjusting your filter criteria</p>
-                        <button 
-                            onClick={clearAllFilters}
-                            className="mt-4 text-blue-600 underline"
-                        >
-                            Clear all filters
-                        </button>
-                    </div>
+                    <button
+                        onClick={clearAllFilters}
+                        className="px-5 py-2 rounded-full font-medium text-red-600 hover:bg-red-50 transition-all duration-200"
+                    >
+                        ✕ Clear All
+                    </button>
                 )}
             </div>
-        </>
+            
+            {/* Show counts ONLY when filters are active */}
+            {(ratingFilter || fastDeliveryFilter || pureVegFilter) && (
+                <div className="mb-4 text-sm text-gray-600 bg-gray-50 p-3 rounded-lg">
+                    <span className="font-medium">Filter summary:</span>
+                    {ratingFilter && <span className="ml-3">⭐ Rating 4.5+ ({ratingCount} available)</span>}
+                    {fastDeliveryFilter && <span className="ml-3">🚚 Fast delivery ({deliveryCount} available)</span>}
+                    {pureVegFilter && <span className="ml-3">🌱 Pure veg ({vegCount} available)</span>}
+                </div>
+            )}
+            
+            <div className="mb-4 text-sm text-gray-600">
+                Showing {filteredRestData.length} of {RestData.length} restaurants
+            </div>
+            
+            {filteredRestData.length > 0 ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    {filteredRestData.map((restInfo) => (
+                        <RestCard key={restInfo?.info?.id} restInfo={restInfo} />
+                    ))}
+                </div>
+            ) : (
+                <div className="text-center py-12 bg-gray-50 rounded-lg">
+                    <p className="text-gray-500 text-lg">No restaurants match your filters.</p>
+                    <p className="text-gray-400 text-sm mt-2">Try adjusting your filter criteria</p>
+                    <button 
+                        onClick={clearAllFilters}
+                        className="mt-4 text-blue-600 underline"
+                    >
+                        Clear all filters
+                    </button>
+                </div>
+            )}
+        </div>
     );
 }
