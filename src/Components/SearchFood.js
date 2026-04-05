@@ -49,7 +49,6 @@ export default function SearchFood(){
                 
                 // Convert Map values to array
                 const uniqueDishes = Array.from(dishesMap.values());
-                console.log(`Total unique dishes: ${uniqueDishes.length}`); // Debug log
                 
                 setAllDishes(uniqueDishes);
                 setFilteredDishes(uniqueDishes);

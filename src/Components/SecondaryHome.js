@@ -8,9 +8,8 @@ export default function SecondaryHome(){
 
         <>
         
-        <RestHeader>
-            <Outlet></Outlet>
-        </RestHeader>
+        <RestHeader></RestHeader>
+        <Outlet></Outlet>
         
         </>
         

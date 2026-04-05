@@ -1,15 +1,35 @@
+import { useDispatch, useSelector } from "react-redux";
+import { addItems, IncrementItems, DecrementItems } from "../Stored/CartSlicer";
+
 export default function RestInfo({restData}){
 
     const rating = restData?.ratings?.aggregatedRating?.rating;
     const ratingCount = restData?.ratings?.aggregatedRating?.ratingCountV2;
     const hasRating = rating && rating !== "0" && rating !== 0;
     
+    const dispatch = useDispatch();
+    const itemCount = useSelector(state => 
+        state.cartslice.items.find(item => item.id === restData?.id)?.quantity || 0
+    );
+
+    function handleAdditems(){
+        dispatch(addItems(restData));
+    }
+
+    function handleIncrementItems(){
+        dispatch(IncrementItems(restData));
+    }
+
+    function handleDecrementItems(){
+        dispatch(DecrementItems(restData));
+    }
+
     // Determine if item is Veg or Non-Veg
-    const isVeg = restData?.isVeg === 1; // Veg items have isVeg: 1
+    const isVeg = restData?.isVeg === 1;
     const isNonVeg = restData?.isVeg === undefined || restData?.isVeg === 0; 
 
     return (
-         <>
+      <>
         <div className="flex w-full justify-between mb-2 pb-2">
           <div className="w-[70%]">
             <div className="flex items-center gap-2 mb-1">
@@ -32,7 +52,7 @@ export default function RestInfo({restData}){
               )}
               <p className="text-xl text-gray-700 font-semibold">{restData?.name}</p>
             </div>
-            <p className="text-lg">{"₹"+ ("defaultPrice" in restData ? restData?.defaultPrice/100:restData?.price/100)}</p>
+            <p className="text-lg">{"₹"+ ("defaultPrice" in restData ? restData?.defaultPrice/100 : restData?.price/100)}</p>
             
             {hasRating ? (
                 <div className="flex items-center gap-1">
@@ -69,12 +89,20 @@ export default function RestInfo({restData}){
                 src={"https://media-assets.swiggy.com/swiggy/image/upload/"+restData?.imageId} 
                 alt={restData?.name}
             />
-            <button className="absolute font-bold bottom-1 left-19 rounded-xl text-lg text-green-600 px-7 py-1 shadow-md border border-white bg-white hover:bg-green-50 transition">
+            {itemCount === 0 ? (
+              <button className="absolute font-bold bottom-2 left-1/2 transform -translate-x-1/2 rounded-xl text-lg text-green-600 px-8 py-1.5 shadow-md border border-white bg-white hover:bg-green-50 transition whitespace-nowrap" onClick={handleAdditems}>
                 ADD
-            </button>
+              </button>
+            ) : (
+              <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex items-center gap-2.5 bg-white rounded-xl shadow-md border border-gray-200 px-3.5 py-1.5">
+                  <button onClick={handleDecrementItems} className="text-green-600 font-bold text-2xl px-1.5">-</button>
+                  <span className="font-semibold text-gray-700 text-lg min-w-7 text-center">{itemCount}</span>
+                  <button onClick={handleIncrementItems} className="text-green-600 font-bold text-2xl px-1.5">+</button>
+              </div>
+            )}
           </div>
         </div>
         <hr className="mb-6 mt-2"></hr>
-        </>
+      </>
     )
 }

@@ -6,7 +6,6 @@ import MenuShimmer from "./MenuShimmer";
 export default function RestaurantMenu(){
    
     let {id} = useParams();
-    console.log(id);
 
     const [RestData, setRestData] = useState([]);
     const [filteredData, setFilteredData] = useState([]);
@@ -90,17 +89,14 @@ export default function RestaurantMenu(){
             return hasItems || hasSubCategories;
         });
         
-        console.log("Filtered categories:", filtered.length);
         setFilteredData(filtered);
     }, [activeFilter, RestData]);
 
     const handleVegClick = () => {
-        console.log("Veg clicked, current filter:", activeFilter);
         setActiveFilter(activeFilter === "VEG" ? null : "VEG");
     };
 
     const handleNonVegClick = () => {
-        console.log("Non-Veg clicked, current filter:", activeFilter);
         setActiveFilter(activeFilter === "NONVEG" ? null : "NONVEG");
     };
 

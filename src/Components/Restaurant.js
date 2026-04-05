@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import RestCard from "./RestCard";
 import Shimmer from "./Shimmer";
-import RestHeader from "./RestHeader";
 
 export default function Restaurant(){
    
@@ -25,8 +24,6 @@ export default function Restaurant(){
                 
                 // Log delivery times to see what's available
                 const deliveryTimes = restaurants.map(r => r?.info?.sla?.deliveryTime).filter(t => t > 0);
-                console.log("Delivery times available:", deliveryTimes);
-                console.log("Restaurants with >30 min delivery:", restaurants.filter(r => r?.info?.sla?.deliveryTime > 30).length);
                 
                 setRestData(restaurants);
                 setFilteredRestData(restaurants);
@@ -45,7 +42,6 @@ export default function Restaurant(){
         
         let filtered = [...RestData];
         
-        console.log("Applying filters...");
         
         // Rating 4.5+ filter
         if (ratingFilter) {
@@ -53,7 +49,6 @@ export default function Restaurant(){
                 const rating = rest?.info?.avgRating;
                 return rating >= 4.5;
             });
-            console.log(`After rating 4.5+ filter: ${filtered.length} restaurants`);
         }
         
         // Fast Delivery filter (delivery time <= 30 mins)
@@ -62,7 +57,6 @@ export default function Restaurant(){
                 const deliveryTime = rest?.info?.sla?.deliveryTime;
                 return deliveryTime <= 30;
             });
-            console.log(`After delivery ≤30min filter: ${filtered.length} restaurants`);
         }
         
         // Pure Veg filter
@@ -71,7 +65,6 @@ export default function Restaurant(){
                 return rest?.info?.veg === true || 
                        rest?.info?.isVeg === true;
             });
-            console.log(`After pure veg filter: ${filtered.length} restaurants`);
         }
         
         setFilteredRestData(filtered);
@@ -85,7 +78,6 @@ export default function Restaurant(){
 
     if (loading) return <Shimmer />;
 
-    // Get counts only for display when filter is active (not shown on buttons)
     const ratingCount = RestData.filter(r => r?.info?.avgRating >= 4.5).length;
     const deliveryCount = RestData.filter(r => r?.info?.sla?.deliveryTime <= 30).length;
     const vegCount = RestData.filter(r => r?.info?.veg === true || r?.info?.isVeg === true).length;
@@ -93,7 +85,7 @@ export default function Restaurant(){
     return (
         <>
 
-            <RestHeader/>
+            {/* <RestHeader/> */}
         
             <div className="w-[80%] mx-auto mt-20">
                 {/* Filter Buttons Section */}

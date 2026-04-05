@@ -16,10 +16,12 @@
   },
   "homepage": "https://github.com/sachinkrjha23/frontend_first#readme",
   "dependencies": {
+    "@reduxjs/toolkit": "^2.11.2",
     "@tailwindcss/postcss": "^4.2.2",
     "parcel": "^2.16.4",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
+    "react-redux": "^9.2.0",
     "react-router": "^7.14.0",
     "tailwindcss": "^4.2.2"
   }
