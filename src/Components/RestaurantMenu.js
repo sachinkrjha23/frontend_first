@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { Link, useParams } from "react-router";
 import MenuCard from "./MenuCard";
 import MenuShimmer from "./MenuShimmer";
 
@@ -11,7 +11,7 @@ export default function RestaurantMenu(){
     const [RestData, setRestData] = useState([]);
     const [filteredData, setFilteredData] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [activeFilter, setActiveFilter] = useState(null); // null, "VEG", "NONVEG"
+    const [activeFilter, setActiveFilter] = useState(null);
 
     useEffect(() => {
         async function fetchData() {
@@ -44,7 +44,6 @@ export default function RestaurantMenu(){
         }
 
         const filtered = RestData.map(category => {
-            // Deep clone the category
             const newCategory = JSON.parse(JSON.stringify(category));
             
             // Filter itemCards if they exist
@@ -80,14 +79,12 @@ export default function RestaurantMenu(){
                     }
                     return newSubCat;
                 }).filter(subCat => {
-                    // Only keep subcategories that have items
                     return subCat?.itemCards && subCat.itemCards.length > 0;
                 });
             }
             
             return newCategory;
         }).filter(category => {
-            // Only keep categories that have items or subcategories with items
             const hasItems = category?.card?.card?.itemCards?.length > 0;
             const hasSubCategories = category?.card?.card?.categories?.length > 0;
             return hasItems || hasSubCategories;
@@ -99,15 +96,11 @@ export default function RestaurantMenu(){
 
     const handleVegClick = () => {
         console.log("Veg clicked, current filter:", activeFilter);
-        // If Veg is already active, turn it off (show all)
-        // Otherwise, activate Veg (and turn off Non-Veg automatically)
         setActiveFilter(activeFilter === "VEG" ? null : "VEG");
     };
 
     const handleNonVegClick = () => {
         console.log("Non-Veg clicked, current filter:", activeFilter);
-        // If Non-Veg is already active, turn it off (show all)
-        // Otherwise, activate Non-Veg (and turn off Veg automatically)
         setActiveFilter(activeFilter === "NONVEG" ? null : "NONVEG");
     };
 
@@ -116,92 +109,111 @@ export default function RestaurantMenu(){
     }
 
     return (
-        <div className="w-[80%] mx-auto mt-20">
-            {/* Filter Buttons - Left aligned square buttons */}
-            <div className="flex gap-3 mb-6">
-                <button
-                    onClick={handleVegClick}
-                    className={`w-12 h-12 rounded-lg border-2 transition-all duration-200 flex items-center justify-center ${
-                        activeFilter === "VEG" 
-                            ? "bg-green-500 border-green-600 shadow-md" 
-                            : "bg-white border-gray-300 hover:border-green-400"
-                    }`}
-                    title="Show vegetarian items only"
-                >
-                    <svg className={`w-6 h-6 ${activeFilter === "VEG" ? "text-white" : "text-green-600"}`} viewBox="0 0 20 20" fill="currentColor">
-                        <circle cx="10" cy="10" r="8" />
-                        <circle cx="10" cy="10" r="3" fill={activeFilter === "VEG" ? "#22c55e" : "white"} />
-                    </svg>
-                </button>
-                
-                <button
-                    onClick={handleNonVegClick}
-                    className={`w-12 h-12 rounded-lg border-2 transition-all duration-200 flex items-center justify-center ${
-                        activeFilter === "NONVEG" 
-                            ? "bg-red-500 border-red-600 shadow-md" 
-                            : "bg-white border-gray-300 hover:border-red-400"
-                    }`}
-                    title="Show non-vegetarian items only"
-                >
-                    <svg className={`w-6 h-6 ${activeFilter === "NONVEG" ? "text-white" : "text-red-600"}`} viewBox="0 0 20 20" fill="currentColor">
-                        <rect x="4" y="4" width="12" height="12" rx="2" />
-                    </svg>
-                </button>
+
+        <div>
+
+            <div className="w-[65%] mx-auto mt-20">
+                <Link to={`/city/delhi/${id}/search`}>
+                    <div className="relative w-full">
+                        <p className="w-full text-center py-3 rounded-xl bg-gray-200 text-xl">
+                            Search for dishes
+                        </p>
+                        {/* Magnifying Glass Icon on RIGHT side */}
+                        <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
+                            <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                        </div>
+                    </div>
+                </Link>
             </div>
-            
-            {/* Active filter indicator */}
-            {activeFilter === "VEG" && (
-                <div className="mb-4 text-sm bg-green-50 p-2 rounded-lg flex items-center gap-2 text-green-700">
-                    <span>🌱 Showing only vegetarian items</span>
-                    <button 
+
+            <div className="w-[80%] mx-auto mt-20">
+                <div className="flex gap-3 mb-6">
+                    <button
                         onClick={handleVegClick}
-                        className="ml-auto text-xs underline hover:no-underline"
+                        className={`w-12 h-12 rounded-lg border-2 transition-all duration-200 flex items-center justify-center ${
+                            activeFilter === "VEG" 
+                                ? "bg-green-500 border-green-600 shadow-md" 
+                                : "bg-white border-gray-300 hover:border-green-400"
+                        }`}
+                        title="Show vegetarian items only"
                     >
-                        Clear filter
+                        <svg className={`w-6 h-6 ${activeFilter === "VEG" ? "text-white" : "text-green-600"}`} viewBox="0 0 20 20" fill="currentColor">
+                            <circle cx="10" cy="10" r="8" />
+                            <circle cx="10" cy="10" r="3" fill={activeFilter === "VEG" ? "#22c55e" : "white"} />
+                        </svg>
                     </button>
-                </div>
-            )}
-            
-            {activeFilter === "NONVEG" && (
-                <div className="mb-4 text-sm bg-red-50 p-2 rounded-lg flex items-center gap-2 text-red-700">
-                    <span>🍖 Showing only non-vegetarian items</span>
-                    <button 
+                    
+                    <button
                         onClick={handleNonVegClick}
-                        className="ml-auto text-xs underline hover:no-underline"
+                        className={`w-12 h-12 rounded-lg border-2 transition-all duration-200 flex items-center justify-center ${
+                            activeFilter === "NONVEG" 
+                                ? "bg-red-500 border-red-600 shadow-md" 
+                                : "bg-white border-gray-300 hover:border-red-400"
+                        }`}
+                        title="Show non-vegetarian items only"
                     >
-                        Clear filter
+                        <svg className={`w-6 h-6 ${activeFilter === "NONVEG" ? "text-white" : "text-red-600"}`} viewBox="0 0 20 20" fill="currentColor">
+                            <rect x="4" y="4" width="12" height="12" rx="2" />
+                        </svg>
                     </button>
                 </div>
-            )}
-            
-            {/* Menu items */}
-            {filteredData.length > 0 ? (
-                filteredData.map((menuItems) => (
-                    <MenuCard 
-                        key={menuItems?.card?.card?.title} 
-                        menuItems={menuItems?.card?.card}
-                        activeFilter={activeFilter}
-                    />
-                ))
-            ) : (
-                <div className="text-center py-12">
-                    <p className="text-gray-500 text-lg">
-                        {activeFilter === "VEG" 
-                            ? "No vegetarian items found in the menu." 
-                            : activeFilter === "NONVEG"
-                            ? "No non-vegetarian items found in the menu."
-                            : "No items found in the menu."}
-                    </p>
-                    {activeFilter && (
+                
+                {activeFilter === "VEG" && (
+                    <div className="mb-4 text-sm bg-green-50 p-2 rounded-lg flex items-center gap-2 text-green-700">
+                        <span>🌱 Showing only vegetarian items</span>
                         <button 
-                            onClick={() => setActiveFilter(null)}
-                            className="mt-4 text-blue-600 underline"
+                            onClick={handleVegClick}
+                            className="ml-auto text-xs underline hover:no-underline"
                         >
-                            Show all items
+                            Clear filter
                         </button>
-                    )}
-                </div>
-            )}
+                    </div>
+                )}
+                
+                {activeFilter === "NONVEG" && (
+                    <div className="mb-4 text-sm bg-red-50 p-2 rounded-lg flex items-center gap-2 text-red-700">
+                        <span>🍖 Showing only non-vegetarian items</span>
+                        <button 
+                            onClick={handleNonVegClick}
+                            className="ml-auto text-xs underline hover:no-underline"
+                        >
+                            Clear filter
+                        </button>
+                    </div>
+                )}
+                
+                {/* Menu items */}
+                {filteredData.length > 0 ? (
+                    filteredData.map((menuItems) => (
+                        <MenuCard 
+                            key={menuItems?.card?.card?.title} 
+                            menuItems={menuItems?.card?.card}
+                            activeFilter={activeFilter}
+                        />
+                    ))
+                ) : (
+                    <div className="text-center py-12">
+                        <p className="text-gray-500 text-lg">
+                            {activeFilter === "VEG" 
+                                ? "No vegetarian items found in the menu." 
+                                : activeFilter === "NONVEG"
+                                ? "No non-vegetarian items found in the menu."
+                                : "No items found in the menu."}
+                        </p>
+                        {activeFilter && (
+                            <button 
+                                onClick={() => setActiveFilter(null)}
+                                className="mt-4 text-blue-600 underline"
+                            >
+                                Show all items
+                            </button>
+                        )}
+                    </div>
+                )}
+            </div>
+        
         </div>
-    );
+    )
 }
