@@ -1,15 +1,37 @@
-
 export default function RestInfo({restData}){
 
     const rating = restData?.ratings?.aggregatedRating?.rating;
     const ratingCount = restData?.ratings?.aggregatedRating?.ratingCountV2;
     const hasRating = rating && rating !== "0" && rating !== 0;
+    
+    // Determine if item is Veg or Non-Veg
+    const isVeg = restData?.isVeg === 1; // Veg items have isVeg: 1
+    const isNonVeg = restData?.isVeg === undefined || restData?.isVeg === 0; 
 
     return (
          <>
         <div className="flex w-full justify-between mb-2 pb-2">
           <div className="w-[70%]">
-            <p className="text-xl text-gray-700 font-semibold mb-1">{restData?.name}</p>
+            <div className="flex items-center gap-2 mb-1">
+              {/* Veg/Non-Veg Indicator */}
+              {isVeg ? (
+                <div className="flex items-center gap-1">
+                  <svg className="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+                    <circle cx="10" cy="10" r="8" fill="#4CAF50" />
+                    <circle cx="10" cy="10" r="3" fill="white" />
+                  </svg>
+                  <span className="text-xs text-green-700 font-medium">Veg</span>
+                </div>
+              ) : isNonVeg && (
+                <div className="flex items-center gap-1">
+                  <svg className="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+                    <rect x="4" y="4" width="12" height="12" rx="2" fill="#DC3545" />
+                  </svg>
+                  <span className="text-xs text-red-600 font-medium">Non-Veg</span>
+                </div>
+              )}
+              <p className="text-xl text-gray-700 font-semibold">{restData?.name}</p>
+            </div>
             <p className="text-lg">{"₹"+ ("defaultPrice" in restData ? restData?.defaultPrice/100:restData?.price/100)}</p>
             
             {hasRating ? (
