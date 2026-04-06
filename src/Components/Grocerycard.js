@@ -1,4 +1,4 @@
-export default function Grocerycard({foodData})
+export default function GroceryCard({foodData})
 {
     return(
         <div className="flex-none">
