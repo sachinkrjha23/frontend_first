@@ -37,7 +37,8 @@ A fully functional Swiggy clone built with React that lets you browse restaurant
 ## 📁 Folder Structure
 
 SWIGGY/
-├── src/
+|   ..........................................................................
+├── src:
 │   ├── Components/
 │   │   ├── Header.js           # Main navigation bar
 │   │   ├── RestHeader.js       # Restaurant page header with cart
@@ -55,13 +56,16 @@ SWIGGY/
 │   │   ├── GroceryOption.js    # Instamart categories
 │   │   ├── DineOption.js       # Dineout restaurants
 │   │   └── SecondaryHome.js    # Layout wrapper for nested routes
+|   ..........................................................................
 │   ├── Stored/
 │   │   ├── stores.js           # Redux store configuration
 │   │   └── CartSlicer.js       # Cart slice with localStorage
+|   .......................................................................... 
 │   ├── Utils/
 │   │   ├── FoodData.js         # Food categories mock data
 │   │   ├── Grocery.js          # Grocery categories mock data
 │   │   └── DineData.js         # Dineout restaurants mock data
+|   ..........................................................................
 │   └── App.js                  # Main app with route definitions
 ├── dist/                       # Production build folder
 ├── index.html                  # Entry HTML file
