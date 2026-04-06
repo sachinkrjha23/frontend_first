@@ -35,38 +35,39 @@ A fully functional Swiggy clone built with React that lets you browse restaurant
 ---
 
 ## 📁 Folder Structure
+
 SWIGGY/
 ├── src/
-│ ├── Components/
-│ │ ├── Header.js # Main navigation bar
-│ │ ├── RestHeader.js # Restaurant page header with cart
-│ │ ├── Home.js # Home page with all options
-│ │ ├── Restaurant.js # Restaurant listing with filters
-│ │ ├── RestCard.js # Individual restaurant card
-│ │ ├── RestaurantMenu.js # Menu page with filters
-│ │ ├── MenuCard.js # Menu category display
-│ │ ├── RestInfo.js # Individual menu item with add to cart
-│ │ ├── SearchFood.js # Search dishes functionality
-│ │ ├── Checkout.js # Cart checkout page
-│ │ ├── Shimmer.js # Loading skeleton for restaurants
-│ │ ├── MenuShimmer.js # Loading skeleton for menu
-│ │ ├── FoodOption.js # Food categories grid
-│ │ ├── GroceryOption.js # Instamart categories
-│ │ ├── DineOption.js # Dineout restaurants
-│ │ └── SecondaryHome.js # Layout wrapper for nested routes
-│ ├── Stored/
-│ │ ├── stores.js # Redux store configuration
-│ │ └── CartSlicer.js # Cart slice with localStorage
-│ ├── Utils/
-│ │ ├── FoodData.js # Food categories mock data
-│ │ ├── Grocery.js # Grocery categories mock data
-│ │ └── DineData.js # Dineout restaurants mock data
-│ └── App.js # Main app with route definitions
-├── dist/ # Production build folder
-├── index.html # Entry HTML file
-├── index.css # Tailwind CSS imports
-├── package.json # Dependencies and scripts
-└── README.md # Project documentation
+│   ├── Components/
+│   │   ├── Header.js           # Main navigation bar
+│   │   ├── RestHeader.js       # Restaurant page header with cart
+│   │   ├── Home.js             # Home page with all options
+│   │   ├── Restaurant.js       # Restaurant listing with filters
+│   │   ├── RestCard.js         # Individual restaurant card
+│   │   ├── RestaurantMenu.js   # Menu page with filters
+│   │   ├── MenuCard.js         # Menu category display
+│   │   ├── RestInfo.js         # Individual menu item with add to cart
+│   │   ├── SearchFood.js       # Search dishes functionality
+│   │   ├── Checkout.js         # Cart checkout page
+│   │   ├── Shimmer.js          # Loading skeleton for restaurants
+│   │   ├── MenuShimmer.js      # Loading skeleton for menu
+│   │   ├── FoodOption.js       # Food categories grid
+│   │   ├── GroceryOption.js    # Instamart categories
+│   │   ├── DineOption.js       # Dineout restaurants
+│   │   └── SecondaryHome.js    # Layout wrapper for nested routes
+│   ├── Stored/
+│   │   ├── stores.js           # Redux store configuration
+│   │   └── CartSlicer.js       # Cart slice with localStorage
+│   ├── Utils/
+│   │   ├── FoodData.js         # Food categories mock data
+│   │   ├── Grocery.js          # Grocery categories mock data
+│   │   └── DineData.js         # Dineout restaurants mock data
+│   └── App.js                  # Main app with route definitions
+├── dist/                       # Production build folder
+├── index.html                  # Entry HTML file
+├── index.css                   # Tailwind CSS imports
+├── package.json                # Dependencies and scripts
+└── README.md                   # Project documentation
 
 ---
 
