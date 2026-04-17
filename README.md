@@ -2,7 +2,7 @@
 
 A fully functional Swiggy clone built with React that lets you browse restaurants, explore menus, filter by preferences, and manage your cart.
 
-**Live Demo:** [swiggyfrontend.netlify.app](https://swiggyfrontend.netlify.app)
+**Live Demo:** [[swiggyfrontend.netlify.app](https://swiggyfrontend.netlify.app)](https://swiggyfrontend.netlify.app/)
 
 ---
 
