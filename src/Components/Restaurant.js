@@ -28,9 +28,7 @@ export default function Restaurant(){
 
             try {
                 setLoading(true);
-                const proxyServer = "https://swiggy-proxy-hrcb.onrender.com/api/restaurants?lat=12.9716&lng=77.5946"
-                const swiggyAPI = "https://www.swiggy.com/dapi/restaurants/list/v5?lat=28.7040592&lng=77.10249019999999&is-seo-homepage-enabled=true";
-                const response = await fetch(proxyServer + swiggyAPI);
+                const response = await fetch("https://swiggy-proxy-hrcb.onrender.com/api/restaurants?lat=12.9716&lng=77.5946");
                 const data = await response.json();
                 const restaurants = data?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants || [];
                 
