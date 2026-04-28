@@ -92,16 +92,6 @@ This app fetches live data from Swiggy's public API through a **custom Node.js p
 
 ---
 
-## 📱 Responsive Design
-
-| Device | Layout |
-|--------|--------|
-| **Mobile** | Hamburger menu, stacked layout |
-| **Tablet** | 2-3 column grid |
-| **Desktop** | 4 column grid, horizontal navigation |
-
----
-
 ## 📞 Connect
 
 **Sachin Kumar Jha**
