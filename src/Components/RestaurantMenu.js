@@ -15,14 +15,34 @@ export default function RestaurantMenu(){
     useEffect(() => {
         async function fetchData() {
             try {
-                const proxyServer = "https://cors-anywhere.herokuapp.com/"
-                const swiggyAPI = `https://www.swiggy.com/mapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=28.7040592&lng=77.10249019999999&restaurantId=${id}`;
-                const response = await fetch(proxyServer + swiggyAPI);
+                const response = await fetch(`https://swiggy-proxy-hrcb.onrender.com/api/menu?restaurantId=${id}`);
                 const data = await response.json();
-                const tempData = data?.data?.cards[5]?.groupedCard?.cardGroupMap?.REGULAR?.cards;
-                const filterData = tempData.filter((items) => 'title' in items?.card?.card);
-                setRestData(filterData);
-                setFilteredData(filterData);
+                
+                // Search through all cards to find the one with groupedCard
+                let menuCards = null;
+                if (data?.data?.cards) {
+                    for (let i = 0; i < data.data.cards.length; i++) {
+                        const card = data.data.cards[i];
+                        if (card?.groupedCard?.cardGroupMap?.REGULAR?.cards) {
+                            menuCards = card.groupedCard.cardGroupMap.REGULAR.cards;
+                            break;
+                        }
+                    }
+                }
+                
+                // If found, filter categories with titles
+                if (menuCards) {
+                    const filterData = menuCards.filter((items) => 'title' in items?.card?.card);
+                    setRestData(filterData);
+                    setFilteredData(filterData);
+                } else {
+                    // Fallback to original path
+                    const tempData = data?.data?.cards[5]?.groupedCard?.cardGroupMap?.REGULAR?.cards || [];
+                    const filterData = tempData.filter((items) => 'title' in items?.card?.card);
+                    setRestData(filterData);
+                    setFilteredData(filterData);
+                }
+                
                 setLoading(false);
             } catch (error) {
                 console.error("Failed to fetch menu:", error);
