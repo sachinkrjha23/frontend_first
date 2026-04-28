@@ -33,7 +33,7 @@ A fully functional Swiggy clone built with React that lets you browse restaurant
 | **Swiggy API** | Real restaurant and menu data |
 
 ---
-
+```
 ## 📁 Folder Structure
 SWIGGY/
 ├── src/
@@ -67,8 +67,7 @@ SWIGGY/
 ├── index.css # Tailwind CSS imports
 ├── package.json # Dependencies and scripts
 └── README.md # Project documentation
-
-text
+```
 
 ---
 
