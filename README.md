@@ -68,13 +68,27 @@ SWIGGY/
 ├── package.json # Dependencies and scripts
 └── README.md # Project documentation
 
+text
+
 ---
 
-## 🌐 API & CORS Note
+## 🌐 API Architecture
 
-This app fetches real data from Swiggy's public API. Due to CORS restrictions, the app uses a proxy:
+This app fetches live data from Swiggy's public API through a **custom Node.js proxy server** deployed on Render.com, eliminating CORS restrictions and manual user intervention.
 
-> **If restaurants don't load:** Visit [cors-anywhere.herokuapp.com/corsdemo](https://cors-anywhere.herokuapp.com/corsdemo) and click "Request temporary access", then refresh the page.
+**How it works:**
+- Frontend calls my custom proxy server instead of calling Swiggy directly
+- Proxy server adds required headers and forwards the request to Swiggy
+- Response is returned to frontend with proper CORS headers
+
+**No more "Request temporary access" needed** — restaurants load automatically.
+
+| Component | Technology | Deployment |
+|-----------|------------|------------|
+| Frontend | React + Redux + Tailwind | Netlify |
+| API Proxy | Node.js + Express | Render.com |
+
+**Proxy Server Repository:** [github.com/sachinkrjha23/swiggy-proxy](https://github.com/sachinkrjha23/swiggy-proxy)
 
 ---
 
@@ -94,5 +108,3 @@ This app fetches real data from Swiggy's public API. Due to CORS restrictions, t
 
 - GitHub: [@sachinkrjha23](https://github.com/sachinkrjha23)
 - Project: [github.com/sachinkrjha23/frontend_first](https://github.com/sachinkrjha23/frontend_first)
-
----
